@@ -6,6 +6,7 @@ import {
   Get,
   UseInterceptors,
   Param,
+  Query,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -38,5 +39,26 @@ export class ProfileController {
   @Get('/get-all')
   getAll() {
     return this.profileService.getAll();
+  }
+
+  @Post('/change-name')
+  changeName(@Body() { name, id }: { name: string; id: string }) {
+    return this.profileService.changeName(name, id);
+  }
+
+  @Post('/change-second-name')
+  changeSecondName(
+    @Body() { secondName, id }: { secondName: string; id: string },
+  ) {
+    return this.profileService.changeSecondName(secondName, id);
+  }
+  @Post('/change-status')
+  changeStatus(@Body() { status, id }: { status: string; id: string }) {
+    return this.profileService.changeStatus(status, id);
+  }
+
+  @Get('/search')
+  search(@Query('query') query: string) {
+    return this.profileService.search(query);
   }
 }

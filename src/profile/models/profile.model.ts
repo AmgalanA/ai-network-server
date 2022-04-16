@@ -4,7 +4,10 @@ import {
   Column,
   DataType,
   ForeignKey,
+  BelongsToMany,
 } from 'sequelize-typescript';
+import { GroupProfilesModel } from 'src/group/models/group-profiles.model';
+import { GroupModel } from 'src/group/models/group.model';
 
 import { AuthModel } from '../../auth/models/auth.model';
 
@@ -48,4 +51,7 @@ export class ProfileModel extends Model<ProfileModel> {
   @ForeignKey(() => AuthModel)
   @Column({ type: DataType.INTEGER })
   authId: number;
+
+  @BelongsToMany(() => GroupModel, () => GroupProfilesModel)
+  groups: GroupModel[];
 }

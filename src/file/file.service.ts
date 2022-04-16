@@ -6,6 +6,9 @@ import * as fs from 'fs';
 export enum FileType {
   IMAGE = 'image',
   POSTIMAGE = 'post-image',
+  GROUPIMAGE = 'group-image',
+  AUDIO = 'audio',
+  AUDIOPICTURE = 'audio-picture',
 }
 
 @Injectable()

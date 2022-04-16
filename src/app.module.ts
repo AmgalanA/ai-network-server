@@ -11,6 +11,9 @@ import { FileModule } from './file/file.module';
 import { PostModule } from './post/post.module';
 import { ChatModule } from './chat/chat.module';
 import { MessageModule } from './message/message.module';
+import { GroupModule } from './group/group.module';
+import { MusicModule } from './music/music.module';
+import { AlbumModule } from './album/album.module';
 
 @Module({
   imports: [
@@ -36,6 +39,9 @@ import { MessageModule } from './message/message.module';
     PostModule,
     ChatModule,
     MessageModule,
+    GroupModule,
+    MusicModule,
+    AlbumModule,
   ],
   controllers: [],
   providers: [],

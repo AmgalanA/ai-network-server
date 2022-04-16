@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
 import { or } from 'sequelize/types';
 import { createChatDto } from './dto/create-chat.dto';
 import { createMessageDto } from './dto/create-message.dto';
@@ -16,8 +17,16 @@ export class ChatService {
   async create(chatDto: createChatDto) {
     const chatCandidate = await this.chatRepository.findOne({
       where: {
-        firstProfileId: chatDto.firstProfileId,
-        secondProfileId: chatDto.secondProfileId,
+        [Op.or]: [
+          {
+            firstProfileId: chatDto.firstProfileId,
+            secondProfileId: chatDto.secondProfileId,
+          },
+          {
+            firstProfileId: chatDto.secondProfileId,
+            secondProfileId: chatDto.firstProfileId,
+          },
+        ],
       },
     });
     if (chatCandidate) return chatCandidate;
@@ -61,13 +70,16 @@ export class ChatService {
 
   async getChats(profileId: number) {
     const chats = await this.chatRepository.findAll({
-      where: { firstProfileId: profileId },
+      where: {
+        [Op.or]: {
+          firstProfileId: profileId,
+          secondProfileId: profileId,
+        },
+      },
       include: { all: true },
     });
-    const filteredChats = chats.filter(
-      (chat) => chat.secondProfileId === profileId,
-    );
-    return chats.concat(filteredChats);
+
+    return chats;
   }
 
   async getChatsByProfiles(profileIds: {

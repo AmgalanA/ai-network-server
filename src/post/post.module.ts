@@ -14,5 +14,6 @@ import { PostService } from './post.service';
     SequelizeModule.forFeature([ProfileModel, PostModel, CommentModel]),
     FileModule,
   ],
+  exports: [PostService],
 })
 export class PostModule {}

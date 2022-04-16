@@ -61,7 +61,6 @@ export class ProfileService {
   async getById(id: string) {
     if (id) {
       try {
-        console.log('PROFILEID: ', id);
         const profile = await this.profileRepository.findOne({ where: { id } });
         return profile;
       } catch (error) {
@@ -73,5 +72,31 @@ export class ProfileService {
   async getAll() {
     const profiles = await this.profileRepository.findAll();
     return profiles;
+  }
+
+  async changeName(name: string, id: string) {
+    const profile = await this.getById(id);
+    profile.name = name;
+    return profile;
+  }
+  async changeSecondName(secondName: string, id: string) {
+    const profile = await this.getById(id);
+    profile.secondName = secondName;
+    return profile;
+  }
+  async changeStatus(status: string, id: string) {
+    const profile = await this.getById(id);
+    profile.status = status;
+    return profile;
+  }
+  async search(query: string) {
+    const profiles = await this.profileRepository.findAll();
+    const filteredProfiles = profiles.filter(
+      (profile) =>
+        profile.name.toLowerCase().includes(query.toLowerCase()) ||
+        profile.secondName.toLowerCase().includes(query.toLowerCase()),
+    );
+
+    return filteredProfiles;
   }
 }

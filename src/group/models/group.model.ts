@@ -1,25 +1,26 @@
 import {
-  Model,
+  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
-  Table,
   HasMany,
+  Model,
+  Table,
 } from 'sequelize-typescript';
-import { GroupModel } from 'src/group/models/group.model';
+import { PostModel } from 'src/post/models/post.model';
 import { ProfileModel } from 'src/profile/models/profile.model';
-import { CommentModel } from './comment.model';
+import { GroupProfilesModel } from './group-profiles.model';
 
-interface PostCreatingAttrs {
-  title: string;
-  text: string;
-  creatorId: number;
+interface GroupCreatingAttrs {
+  name: string;
+  createdAt: string;
+  description: string;
   imageUrl: string;
-  postedAt: string | number;
+  creatorId: number;
 }
 
-@Table({ tableName: 'post' })
-export class PostModel extends Model<PostModel, PostCreatingAttrs> {
+@Table({ tableName: 'group' })
+export class GroupModel extends Model<GroupModel, GroupCreatingAttrs> {
   @Column({
     type: DataType.INTEGER,
     autoIncrement: true,
@@ -29,13 +30,13 @@ export class PostModel extends Model<PostModel, PostCreatingAttrs> {
   id: number;
 
   @Column({ type: DataType.STRING })
-  title: string;
+  name: string;
 
   @Column({ type: DataType.STRING })
-  text: string;
+  createdAt: string;
 
   @Column({ type: DataType.STRING })
-  postedAt: string;
+  description: string;
 
   @Column({ type: DataType.STRING })
   imageUrl: string;
@@ -44,10 +45,9 @@ export class PostModel extends Model<PostModel, PostCreatingAttrs> {
   @Column({ type: DataType.INTEGER })
   creatorId: number;
 
-  @ForeignKey(() => GroupModel)
-  @Column({ type: DataType.INTEGER })
-  groupId: number;
+  @BelongsToMany(() => ProfileModel, () => GroupProfilesModel)
+  members: ProfileModel[];
 
-  @HasMany(() => CommentModel)
-  comments: CommentModel[];
+  @HasMany(() => PostModel)
+  posts: PostModel[];
 }

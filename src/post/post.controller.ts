@@ -49,4 +49,9 @@ export class PostController {
   ) {
     return this.postService.sendComment(postId, commentDto);
   }
+
+  @Get('/search')
+  search(@Query('query') query: string) {
+    return this.postService.search(query);
+  }
 }

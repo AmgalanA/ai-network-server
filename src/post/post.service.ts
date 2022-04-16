@@ -71,14 +71,13 @@ export class PostService {
   }
 
   async search(query: string) {
-    const posts = await this.postRepository.findAll({
-      where: {
-        title: {
-          [Op.like]: '%' + query + '%',
-        },
-      },
-    });
+    const posts = await this.postRepository.findAll();
+    const filteredPosts = posts.filter(
+      (post) =>
+        post.text.toLowerCase().trim().includes(query.trim().toLowerCase()) ||
+        post.title.toLowerCase().trim().includes(query.trim().toLowerCase()),
+    );
 
-    return posts;
+    return filteredPosts;
   }
 }
